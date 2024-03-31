@@ -1,0 +1,38 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: rgb(244, 206, 159);
+}
+
+h1 {
+  text-align: center;
+}
+
+#schedule-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #593918;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  width: 150px;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+td input {
+  width: calc(100% - 24px);
+}
