@@ -1,18 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
     const scheduleContainer = document.getElementById('schedule-container');
 
-    // Generate dates for April
-    const aprilStartDate = new Date('2024-04-01');
-    const aprilEndDate = new Date('2024-04-30');
-    const aprilDates = generateDatesArray(aprilStartDate, aprilEndDate);
-
-    // Generate dates for May
-    const mayStartDate = new Date('2024-05-01');
-    const mayEndDate = new Date('2024-05-31');
-    const mayDates = generateDatesArray(mayStartDate, mayEndDate);
-
-    // Combine dates for both months
-    const allDates = aprilDates.concat(mayDates);
+    // Generate dates from June 15 to August 4
+    const startDate = new Date('2024-06-15');
+    const endDate = new Date('2024-08-04');
+    const allDates = generateDatesArray(startDate, endDate);
 
     // Create table
     const table = document.createElement('table');
@@ -28,6 +20,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const book2Header = document.createElement('th');
     book2Header.textContent = 'COMPANY LAW';
     headerRow.appendChild(book2Header);
+    const book3Header = document.createElement('th');
+    book3Header.textContent = 'MFA';
+    headerRow.appendChild(book3Header);
+    const book4Header = document.createElement('th');
+    book4Header.textContent = 'FAR1';
+    headerRow.appendChild(book4Header);
     tbody.appendChild(headerRow);
 
     // Create table body
@@ -82,6 +80,18 @@ document.addEventListener("DOMContentLoaded", function() {
         book2Cell.appendChild(book2Input);
         row.appendChild(book2Cell);
 
+        const book3Cell = document.createElement('td');
+        const book3Input = document.createElement('input');
+        book3Input.setAttribute('type', 'text');
+        book3Cell.appendChild(book3Input);
+        row.appendChild(book3Cell);
+
+        const book4Cell = document.createElement('td');
+        const book4Input = document.createElement('input');
+        book4Input.setAttribute('type', 'text');
+        book4Cell.appendChild(book4Input);
+        row.appendChild(book4Cell);
+
         // Add clear button
         const clearButtonCell = document.createElement('td');
         const clearButton = document.createElement('button');
@@ -120,13 +130,6 @@ document.addEventListener("DOMContentLoaded", function() {
     function clearRow(row) {
         const inputs = row.querySelectorAll('input');
         inputs.forEach(input => {
-            // input.value = '';
-        });
-    }
-
-    function clearsRow(row) {
-        const inputs = row.querySelectorAll('input');
-        inputs.forEach(input => {
             input.value = '';
         });
     }
@@ -143,6 +146,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 input.value = previousInputs[index].value;
             });
         }
-        clearsRow(clearedRow);
+        clearRow(clearedRow);
     }
 });
