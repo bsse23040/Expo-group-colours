@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const scheduleContainer = document.getElementById('schedule-container');
+    const downloadBtn = document.getElementById('download-btn');
+    const uploadBtn = document.getElementById('upload-btn');
 
     // Generate dates from June 15 to August 4
     const startDate = new Date('2024-06-15');
@@ -51,6 +53,12 @@ document.addEventListener("DOMContentLoaded", function() {
             shiftRows(row);
         }
     });
+
+    // Download button event listener
+    downloadBtn.addEventListener('click', downloadSchedule);
+
+    // Upload button event listener
+    uploadBtn.addEventListener('change', uploadSchedule);
 
     function generateDatesArray(startDate, endDate) {
         const dates = [];
@@ -147,5 +155,31 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
         clearRow(clearedRow);
+    }
+
+    function downloadSchedule() {
+        const data = localStorage.getItem('scheduleData');
+        if (data) {
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'scheduleData.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    }
+
+    function uploadSchedule(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = e.target.result;
+                localStorage.setItem('scheduleData', data);
+                loadSchedule();
+            };
+            reader.readAsText(file);
+        }
     }
 });
