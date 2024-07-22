@@ -3,62 +3,85 @@ document.addEventListener("DOMContentLoaded", function() {
     const downloadBtn = document.getElementById('download-btn');
     const uploadBtn = document.getElementById('upload-btn');
 
-    // Generate dates from June 15 to August 4
-    const startDate = new Date('2024-06-15');
-    const endDate = new Date('2024-08-04');
-    const allDates = generateDatesArray(startDate, endDate);
+    let subjectNames;
+    let allDates;
 
-    // Create table
-    const table = document.createElement('table');
-    const tbody = document.createElement('tbody');
+    const savedData = localStorage.getItem('scheduleData');
 
-    // Create header row
-    const headerRow = document.createElement('tr');
-    const emptyHeader = document.createElement('th');
-    headerRow.appendChild(emptyHeader);
-    const book1Header = document.createElement('th');
-    book1Header.textContent = 'TAX';
-    headerRow.appendChild(book1Header);
-    const book2Header = document.createElement('th');
-    book2Header.textContent = 'COMPANY LAW';
-    headerRow.appendChild(book2Header);
-    const book3Header = document.createElement('th');
-    book3Header.textContent = 'MFA';
-    headerRow.appendChild(book3Header);
-    const book4Header = document.createElement('th');
-    book4Header.textContent = 'FAR1';
-    headerRow.appendChild(book4Header);
-    tbody.appendChild(headerRow);
-
-    // Create table body
-    allDates.forEach(date => {
-        const row = createRow(date);
-        tbody.appendChild(row);
-    });
-
-    table.appendChild(tbody);
-    scheduleContainer.appendChild(table);
-
-    // Load saved data from local storage
-    loadSchedule();
-
-    // Save data to local storage when input changes
-    table.addEventListener('input', saveSchedule);
-
-    // Add event listener to each clear button
-    table.addEventListener('click', function(event) {
-        if (event.target.classList.contains('clear-button')) {
-            const row = event.target.closest('tr');
-            clearRow(row);
-            shiftRows(row);
+    if (savedData) {
+        const userChoice = confirm("Do you want to view the existing schedule? Click 'Cancel' to create a new schedule.");
+        if (userChoice) {
+            const { subjects, dates, data } = JSON.parse(savedData);
+            subjectNames = subjects;
+            allDates = dates.map(date => new Date(date));
+            generateSchedule(subjectNames, allDates, data);
+        } else {
+            createNewSchedule();
         }
-    });
+    } else {
+        createNewSchedule();
+    }
 
-    // Download button event listener
-    downloadBtn.addEventListener('click', downloadSchedule);
+    function createNewSchedule() {
+        const numberOfSubjects = parseInt(prompt("Enter the number of subjects:"), 10);
+        subjectNames = [];
+        for (let i = 0; i < numberOfSubjects; i++) {
+            const subjectName = prompt(`Enter the name of subject ${i + 1}:`);
+            subjectNames.push(subjectName);
+        }
+        const startDateStr = prompt("Enter the start date (DD/MM/YY):");
+        const endDateStr = prompt("Enter the end date (DD/MM/YY):");
+        const startDate = parseDate(startDateStr);
+        const endDate = parseDate(endDateStr);
+        allDates = generateDatesArray(startDate, endDate);
+        generateSchedule(subjectNames, allDates);
+    }
 
-    // Upload button event listener
-    uploadBtn.addEventListener('change', uploadSchedule);
+    function generateSchedule(subjectNames, allDates, savedData = []) {
+        scheduleContainer.innerHTML = ''; // Clear previous schedule if any
+
+        // Create table
+        const table = document.createElement('table');
+        const tbody = document.createElement('tbody');
+
+        // Create header row
+        const headerRow = document.createElement('tr');
+        const emptyHeader = document.createElement('th');
+        headerRow.appendChild(emptyHeader);
+        subjectNames.forEach(subject => {
+            const subjectHeader = document.createElement('th');
+            subjectHeader.textContent = subject.toUpperCase();
+            headerRow.appendChild(subjectHeader);
+        });
+        tbody.appendChild(headerRow);
+
+        // Create table body
+        allDates.forEach((date, dateIndex) => {
+            const row = createRow(date, subjectNames.length, savedData[dateIndex]);
+            tbody.appendChild(row);
+        });
+
+        table.appendChild(tbody);
+        scheduleContainer.appendChild(table);
+
+        // Save data to local storage when input changes
+        table.addEventListener('input', saveSchedule);
+
+        // Add event listener to each clear button
+        table.addEventListener('click', function(event) {
+            if (event.target.classList.contains('clear-button')) {
+                const row = event.target.closest('tr');
+                shiftRows(row);
+                clearRow(row);
+            }
+        });
+
+        // Download button event listener
+        downloadBtn.addEventListener('click', downloadSchedule);
+
+        // Upload button event listener
+        uploadBtn.addEventListener('change', uploadSchedule);
+    }
 
     function generateDatesArray(startDate, endDate) {
         const dates = [];
@@ -70,35 +93,21 @@ document.addEventListener("DOMContentLoaded", function() {
         return dates;
     }
 
-    function createRow(date) {
+    function createRow(date, subjectCount, savedData = []) {
         const row = document.createElement('tr');
         const dateHeader = document.createElement('th');
         dateHeader.textContent = formatDate(date);
         row.appendChild(dateHeader);
 
-        const book1Cell = document.createElement('td');
-        const book1Input = document.createElement('input');
-        book1Input.setAttribute('type', 'text');
-        book1Cell.appendChild(book1Input);
-        row.appendChild(book1Cell);
-
-        const book2Cell = document.createElement('td');
-        const book2Input = document.createElement('input');
-        book2Input.setAttribute('type', 'text');
-        book2Cell.appendChild(book2Input);
-        row.appendChild(book2Cell);
-
-        const book3Cell = document.createElement('td');
-        const book3Input = document.createElement('input');
-        book3Input.setAttribute('type', 'text');
-        book3Cell.appendChild(book3Input);
-        row.appendChild(book3Cell);
-
-        const book4Cell = document.createElement('td');
-        const book4Input = document.createElement('input');
-        book4Input.setAttribute('type', 'text');
-        book4Cell.appendChild(book4Input);
-        row.appendChild(book4Cell);
+        for (let i = 0; i < subjectCount; i++) {
+            const cell = document.createElement('td');
+            const textarea = document.createElement('textarea');
+            if (savedData && savedData[i]) {
+                textarea.value = savedData[i];
+            }
+            cell.appendChild(textarea);
+            row.appendChild(cell);
+        }
 
         // Add clear button
         const clearButtonCell = document.createElement('td');
@@ -117,44 +126,34 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function saveSchedule() {
-        const inputs = table.querySelectorAll('input');
+        const textareas = scheduleContainer.querySelectorAll('textarea');
         const data = [];
-        inputs.forEach(input => {
-            data.push(input.value);
+        textareas.forEach(textarea => {
+            data.push(textarea.value);
         });
-        localStorage.setItem('scheduleData', JSON.stringify(data));
-    }
-
-    function loadSchedule() {
-        const data = JSON.parse(localStorage.getItem('scheduleData'));
-        if (data) {
-            const inputs = table.querySelectorAll('input');
-            inputs.forEach((input, index) => {
-                input.value = data[index];
-            });
-        }
+        const savedData = { subjects: subjectNames, dates: allDates.map(date => date.toISOString()), data: chunkArray(data, subjectNames.length) };
+        localStorage.setItem('scheduleData', JSON.stringify(savedData));
     }
 
     function clearRow(row) {
-        const inputs = row.querySelectorAll('input');
-        inputs.forEach(input => {
-            input.value = '';
+        const textareas = row.querySelectorAll('textarea');
+        textareas.forEach(textarea => {
+            textarea.value = '';
         });
     }
 
     function shiftRows(clearedRow) {
-        const rows = table.querySelectorAll('tr');
+        const rows = scheduleContainer.querySelectorAll('tr');
         const clearedIndex = Array.from(rows).indexOf(clearedRow);
-        for (let i = rows.length - 1; i > clearedIndex; i--) {
+        for (let i = rows.length - 2; i >= clearedIndex; i--) {
             const currentRow = rows[i];
-            const previousRow = rows[i - 1];
-            const currentInputs = currentRow.querySelectorAll('input');
-            const previousInputs = previousRow.querySelectorAll('input');
-            currentInputs.forEach((input, index) => {
-                input.value = previousInputs[index].value;
+            const nextRow = rows[i + 1];
+            const currentTextareas = currentRow.querySelectorAll('textarea');
+            const nextTextareas = nextRow.querySelectorAll('textarea');
+            currentTextareas.forEach((textarea, index) => {
+                nextTextareas[index].value = textarea.value;
             });
         }
-        clearRow(clearedRow);
     }
 
     function downloadSchedule() {
@@ -177,9 +176,22 @@ document.addEventListener("DOMContentLoaded", function() {
             reader.onload = function(e) {
                 const data = e.target.result;
                 localStorage.setItem('scheduleData', data);
-                loadSchedule();
+                location.reload();
             };
             reader.readAsText(file);
         }
+    }
+
+    function parseDate(dateStr) {
+        const [day, month, year] = dateStr.split('/').map(Number);
+        return new Date(year + 2000, month - 1, day); // Adjusting year to 2000+
+    }
+
+    function chunkArray(arr, chunkSize) {
+        const result = [];
+        for (let i = 0; i < arr.length; i += chunkSize) {
+            result.push(arr.slice(i, i + chunkSize));
+        }
+        return result;
     }
 });

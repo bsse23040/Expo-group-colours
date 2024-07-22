@@ -33,7 +33,9 @@ th {
   background-color: #f2f2f2;
 }
 
-td input {
+td textarea {
   width: calc(100% - 5px);
-  height 100%;
+  height: 40px;
+  resize: none; /* Prevent resizing by the user */
+  overflow: hidden; /* Hide overflow to prevent scrollbars */
 }
