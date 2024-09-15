@@ -3,17 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CA Schedule by Asad Raza Aujla</title>
-<link rel="shortcut icon" href="profileabc.jpg" type="image/x-icon">
+<title>Select Books and Dates - CA Schedule by Asad Raza Aujla</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Schedule for CAs</h1>
+    <style>
+        body {
+             background-image: radial-gradient( rgb(255, 255, 255),rgb(159, 247, 167)) ;
+            }
+    </style>
+<h1>Select Books and Dates for Schedule</h1>
 
-<div id="schedule-container"></div>
-<button id="download-btn">Download Schedule</button>
-<input type="file" id="upload-btn" accept=".json">
-<script src="script.js"></script>
+<div id="book-selection">
+    <h2>Select Books</h2>
+    <div id="book-list"></div>
+    <button id="add-book-btn">Add More Books</button>
+</div>
+
+<div id="date-selection">
+    <h2>Select Dates</h2>
+    <label for="start-date">Start Date:</label>
+    <input type="date" id="start-date"><br>
+
+    <label for="end-date">End Date:</label>
+    <input type="date" id="end-date"><br>
+
+    <button id="apply-dates">Apply Dates</button>
+</div>
+
+<button id="apply-selection-btn">Proceed to Schedule</button>
+
+<script src="index.js"></script>
 </body>
 </html>
