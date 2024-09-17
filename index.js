@@ -1,13 +1,12 @@
 document.addEventListener("DOMContentLoaded", function() {
     const bookList = document.getElementById('book-list');
     const addBookBtn = document.getElementById('add-book-btn');
-    const applyDatesBtn = document.getElementById('apply-dates');
     const applySelectionBtn = document.getElementById('apply-selection-btn');
     const startDateInput = document.getElementById('start-date');
     const endDateInput = document.getElementById('end-date');
 
     const defaultBooks = [
-        "Book 1", "Book 2", "Book 3", "Book 4", "Book 5"
+        "Book 1", "Book 2"
     ];
 
     function initialize() {
@@ -43,24 +42,9 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
-        applyDatesBtn.addEventListener('click', function() {
-            const startDateStr = startDateInput.value;
-            const endDateStr = endDateInput.value;
-
-            if (startDateStr && endDateStr) {
-                const startDate = new Date(startDateStr);
-                const endDate = new Date(endDateStr);
-
-                if (startDate <= endDate) {
-                    localStorage.setItem('startDate', startDate.toISOString());
-                    localStorage.setItem('endDate', endDate.toISOString());
-                } else {
-                    alert("End date must be after the start date.");
-                }
-            } else {
-                alert("Please select both start and end dates.");
-            }
-        });
+        // Automatically save dates when they change
+        startDateInput.addEventListener('change', handleDateChange);
+        endDateInput.addEventListener('change', handleDateChange);
 
         applySelectionBtn.addEventListener('click', function() {
             const checkedBooks = Array.from(document.querySelectorAll('#book-list input:checked'))
@@ -73,6 +57,23 @@ document.addEventListener("DOMContentLoaded", function() {
                 alert("Please select at least one book.");
             }
         });
+    }
+
+    function handleDateChange() {
+        const startDateStr = startDateInput.value;
+        const endDateStr = endDateInput.value;
+
+        if (startDateStr && endDateStr) {
+            const startDate = new Date(startDateStr);
+            const endDate = new Date(endDateStr);
+
+            if (startDate <= endDate) {
+                localStorage.setItem('startDate', startDate.toISOString());
+                localStorage.setItem('endDate', endDate.toISOString());
+            } else {
+                alert("End date must be after the start date.");
+            }
+        }
     }
 
     function updateBookList() {
