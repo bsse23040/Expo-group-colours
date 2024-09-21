@@ -6,19 +6,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const endDateInput = document.getElementById('end-date');
 
     const defaultBooks = [
-        "Book 1", "Book 2"
+        "SAMPLE BOOK"
     ];
 
     function initialize() {
-        const choice = prompt("Do you want to create a new schedule or go to an already created one? Type (0) for 'new' or (1) for 'existing'.");
-
-        if (choice.toLowerCase() === '1') {
-            window.location.href = 'page1.html'; // Redirect to schedule page with existing data
-        } else if (choice.toLowerCase() === '0') {
             setupNewSchedule();
-        } else {
-            alert("Invalid choice. Please refresh the page and try again.");
-        }
     }
 
     function setupNewSchedule() {

@@ -2,6 +2,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 20px;
+  min-height: 100vh; min-width: 100vw;
   /* background-image: radial-gradient( rgb(255, 255, 255),rgb(159, 247, 167)) ; */
 }
 
@@ -253,3 +254,42 @@ input[type="checkbox"] {
   font-size: 1rem;
   color: transparent;
 }
+
+
+
+
+
+
+/* From Uiverse.io by lenfear23 */ 
+.buttonu, .clear-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  cursor: pointer;
+  width: 150px;
+  height: 50px;
+  background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%);
+  border-radius: 30px;
+  border: 1px solid #8F9092;
+  transition: all 0.2s ease;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #606060;
+  text-shadow: 0 1px #fff;
+}
+
+.buttonu:hover {
+  box-shadow: 0 4px 3px 1px #d5dfe3, 0 6px 8px #ddc3dd, 0 -4px 4px #cce6eb, 0 -6px 4px #e1d2e2, inset 0 0 3px 3px #CECFD1;
+}
+
+.buttonu:active {
+  box-shadow: 0 4px 3px 1px #d5dfe3, 0 6px 8px #ddc3dd, 0 -4px 4px #cce6eb, 0 -6px 4px #e1d2e2, inset 0 0 5px 3px #bdbdbd, inset 0 0 30px #d7d6d6;
+}
+
+.buttonu:focus {
+  box-shadow: 0 4px 3px 1px #d5dfe3, 0 6px 8px #ddc3dd, 0 -4px 4px #cce6eb, 0 -6px 4px #e1d2e2, inset 0 0 5px 3px #bbbaba, inset 0 0 30px #c0bebe;
+}
+
+
