@@ -3,6 +3,7 @@ body {
   margin: 0;
   padding: 20px;
   min-height: 100vh;
+  max-width: 100vw;
   /* background-image: radial-gradient( rgb(255, 255, 255),rgb(159, 247, 167)) ; */
 }
 
