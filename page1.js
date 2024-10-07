@@ -34,13 +34,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Create header row
         const headerRow = document.createElement('tr');
-        const emptyHeader = document.createElement('th');
-        headerRow.appendChild(emptyHeader);
+        const dateHeader = document.createElement('th');
+        dateHeader.textContent = "Date";
+        headerRow.appendChild(dateHeader);
+
+        const dayHeader = document.createElement('th');
+        dayHeader.textContent = "Day";
+        headerRow.appendChild(dayHeader);
+
         subjectNames.forEach(subject => {
             const subjectHeader = document.createElement('th');
             subjectHeader.textContent = subject.toUpperCase();
             headerRow.appendChild(subjectHeader);
         });
+
         tbody.appendChild(headerRow);
 
         // Create table body
@@ -83,10 +90,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function createRow(date, subjectCount, savedData = []) {
         const row = document.createElement('tr');
-        const dateHeader = document.createElement('th');
-        dateHeader.textContent = formatDate(date);
-        row.appendChild(dateHeader);
+        
+        // Date cell
+        const dateCell = document.createElement('td');
+        dateCell.textContent = formatDate(date);
+        row.appendChild(dateCell);
 
+        // Day cell
+        const dayCell = document.createElement('td');
+        dayCell.textContent = getDayName(date);
+        row.appendChild(dayCell);
+
+        // Subject cells
         for (let i = 0; i < subjectCount; i++) {
             const cell = document.createElement('td');
             const textarea = document.createElement('textarea');
@@ -99,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Add clear button
         const clearButtonCell = document.createElement('td');
+        clearButtonCell.classList.add('clear-button-column');  // Add the class here
         const clearButton = document.createElement('button');
         clearButton.textContent = 'Clear';
         clearButton.classList.add('clear-button');
@@ -113,6 +129,11 @@ document.addEventListener("DOMContentLoaded", function() {
         return date.toLocaleDateString('en-US', options);
     }
 
+    function getDayName(date) {
+        const options = { weekday: 'short' };
+        return date.toLocaleDateString('en-US', options);
+    }
+
     function saveSchedule() {
         const textareas = scheduleContainer.querySelectorAll('textarea');
         const data = [];
@@ -122,35 +143,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const savedData = { subjects: subjectNames, dates: allDates.map(date => date.toISOString()), data: chunkArray(data, subjectNames.length) };
         localStorage.setItem('scheduleData', JSON.stringify(savedData));
     }
-
-    function createRow(date, subjectCount, savedData = []) {
-        const row = document.createElement('tr');
-        const dateHeader = document.createElement('th');
-        dateHeader.textContent = formatDate(date);
-        row.appendChild(dateHeader);
-    
-        for (let i = 0; i < subjectCount; i++) {
-            const cell = document.createElement('td');
-            const textarea = document.createElement('textarea');
-            if (savedData && savedData[i]) {
-                textarea.value = savedData[i];
-            }
-            cell.appendChild(textarea);
-            row.appendChild(cell);
-        }
-    
-        // Add clear button
-        const clearButtonCell = document.createElement('td');
-        clearButtonCell.classList.add('clear-button-column');  // Add the class here
-        const clearButton = document.createElement('button');
-        clearButton.textContent = 'Clear';
-        clearButton.classList.add('clear-button');
-        clearButtonCell.appendChild(clearButton);
-        row.appendChild(clearButtonCell);
-    
-        return row;
-    }
-    
 
     function clearRow(row) {
         const textareas = row.querySelectorAll('textarea');
@@ -172,7 +164,6 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
     }
-    
 
     function downloadSchedule() {
         const data = localStorage.getItem('scheduleData');
