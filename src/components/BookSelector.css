@@ -1,0 +1,74 @@
+/* BookSelector.css */
+
+.book-selector-container {
+  margin-bottom: 24px;
+}
+
+.book-selector-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #111827;
+}
+
+.book-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.book-input-field {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  font-size: 1rem;
+}
+
+.book-add-button {
+  background-color: #119459;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.book-add-button:hover {
+  background-color: #059669;
+}
+
+.book-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.book-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.book-remove-button {
+  background: none;
+  color: #ef4444;
+  font-weight: bold;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+  transition: color 0.2s ease;
+}
+
+.book-remove-button:hover {
+  color: #b91c1c;
+}
