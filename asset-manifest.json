@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Expo-group-colours/static/css/main.d7ce9e06.css",
+    "main.js": "/Expo-group-colours/static/js/main.7c1a84a9.js",
+    "static/js/453.9e480d60.chunk.js": "/Expo-group-colours/static/js/453.9e480d60.chunk.js",
+    "index.html": "/Expo-group-colours/index.html",
+    "main.d7ce9e06.css.map": "/Expo-group-colours/static/css/main.d7ce9e06.css.map",
+    "main.7c1a84a9.js.map": "/Expo-group-colours/static/js/main.7c1a84a9.js.map",
+    "453.9e480d60.chunk.js.map": "/Expo-group-colours/static/js/453.9e480d60.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d7ce9e06.css",
+    "static/js/main.7c1a84a9.js"
+  ]
+}
